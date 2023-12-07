@@ -2,6 +2,7 @@ package com.topkqh.taxi.service
 
 import com.topkqh.taxi.service.types.Driver
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.query
 import org.springframework.stereotype.Service
 
 @Service
@@ -20,6 +21,28 @@ class DriverService(val db: JdbcTemplate) {
                     response.getString("name"),
                     response.getString("vehicle_id"))
         }
+    }
+
+    fun findDriverById(id: String): List<Driver> {
+        return db.query("select * from TAXI_DRIVERS where id = ?", id) { response, _ ->
+            Driver(response.getString("id"), response.getString("name"), response.getString("vehicle_id"))
+        }
+    }
+
+    fun findDriverByName(name: String): List<Driver> {
+        return db.query("select * from TAXI_DRIVERS where name = ?", name) { response, _ ->
+            Driver(response.getString("id"), response.getString("name"), response.getString("vehicle_id"))
+        }
+    }
+
+    fun findDriverByLicence(id: String): List<Driver> {
+        return db.query("select * from TAXI_DRIVERS where vehicle_id = ?", id) { response, _ ->
+            Driver(response.getString("id"), response.getString("name"), response.getString("vehicle_id"))
+        }
+    }
+
+    fun deleteDriver(id: String): Boolean {
+        return db.update("delete from TAXI_DRIVERS where id = ?", id) > 0
     }
 
     var busyDrivers: MutableList<Driver> = mutableListOf()
