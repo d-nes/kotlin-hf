@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.15")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
 	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.15")
+	implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks.withType<KotlinCompile> {
