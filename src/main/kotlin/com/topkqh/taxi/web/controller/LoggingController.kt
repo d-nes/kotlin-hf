@@ -16,8 +16,6 @@ class LoggingController(val service: LoggingService) {
 
     @PostMapping
     fun addLog(@RequestBody log: Log){
-        log.id = log.id ?: UUID.randomUUID().toString()
-        log.time = Time(System.currentTimeMillis());
         service.addLog(log)
     }
 
