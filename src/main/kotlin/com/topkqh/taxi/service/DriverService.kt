@@ -1,45 +1,34 @@
 package com.topkqh.taxi.service
 
 import com.topkqh.taxi.service.types.Driver
+import com.topkqh.taxi.service.types.DriverRepository
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.jvm.optionals.toList
 
 @Service
-class DriverService(val db: JdbcTemplate) {
+class DriverService(val db: DriverRepository) {
 
     fun addDriver(driver: Driver) {
-        db.update("insert into TAXI_DRIVERS values ( ?, ?, ?)",
-                driver.id, driver.name, driver.vehicle_id
-        )
+        db.save(driver)
         println("Driver added: $driver")
     }
 
     fun listDriver(): List<Driver> {
-        return db.query("select * from TAXI_DRIVERS") { response, _ ->
-            Driver(response.getString("id"),
-                    response.getString("name"),
-                    response.getString("vehicle_id"))
-        }
+        return db.findAll().toList()
     }
 
     fun findDriverById(id: String): List<Driver> {
-        return db.query("select * from TAXI_DRIVERS where id = ?", id)  { response, _ ->
-            Driver(response.getString("id"),
-                response.getString("name"),
-                response.getString("vehicle_id"))
-        }
+        return db.findById(id).toList()
     }
 
-    fun deleteDriver(id: String): Boolean {
-        return db.update("delete from TAXI_DRIVERS where id = ?", id) > 0
+    fun deleteDriver(id: String) {
+        db.deleteById(id)
     }
 
     fun updateDriver(driver: Driver) {
-        db.update("delete from TAXI_DRIVERS where id = ?", driver.id)
-        db.update("insert into TAXI_DRIVERS values ( ?, ?, ?)",
-                driver.id, driver.name, driver.vehicle_id
-        )
+        db.save(driver)
         println("Driver modified: $driver")
     }
 
