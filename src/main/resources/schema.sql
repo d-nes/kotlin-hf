@@ -5,3 +5,9 @@ CREATE TABLE IF NOT EXISTS TAXI_LOG (
     customer     VARCHAR      NOT NULL,
     message     VARCHAR      NOT NULL
     );
+
+CREATE TABLE IF NOT EXISTS TAXI_DRIVERS (
+    id       VARCHAR(60)  PRIMARY KEY,
+    name     VARCHAR      NOT NULL,
+    vehicle_id     VARCHAR      NOT NULL
+    );
