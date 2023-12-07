@@ -19,9 +19,15 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-data-jdbc:3.0.4")
+	implementation("org.springframework.boot:spring-boot-starter-web:3.1.0")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	runtimeOnly("com.h2database:h2:2.1.214")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
+	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.15")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.15")
 }
 
 tasks.withType<KotlinCompile> {
