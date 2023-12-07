@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS TAXI_LOG (
-    id       VARCHAR(60)  PRIMARY KEY,
+    id       VARCHAR(60) DEFAULT RANDOM_UUID() PRIMARY KEY,
     time     TIME      NOT NULL,
+    date     DATE      NOT NULL,
     driver     VARCHAR      NOT NULL,
     customer     VARCHAR,
     message     VARCHAR      NOT NULL

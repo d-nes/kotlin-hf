@@ -18,7 +18,7 @@ class TaxiController(val loggingService: LoggingService, val driverService: Driv
     fun requestTaxi(@RequestBody customer: Customer): ResponseEntity<out Any> {
         val driver = driverService.dispatchDriver()
         if (driver != null) {
-            loggingService.addLog(Log(null, null, driver.name, customer.name, "Dispatched for pick-up: " + customer.location + " to " + customer.destination))
+            loggingService.addLog(Log(null, null, null, driver.name, customer.name, "Dispatched for pick-up: from " + customer.location + " to " + customer.destination))
             return ResponseEntity.ok().body(Dispatch(driver, Random.nextInt(5, 61)))
         }
         return ResponseEntity.ok().body("No available drivers")
@@ -28,7 +28,7 @@ class TaxiController(val loggingService: LoggingService, val driverService: Driv
     fun returnTaxi(@RequestBody driver: Driver): ResponseEntity<out Any> {
         val valid = driverService.returnDriver(driver)
         return if (valid) {
-            loggingService.addLog(Log(null, null, driver.name, null, "Driver has return to depo"))
+            loggingService.addLog(Log(null, null, null, driver.name, null, "Driver has return to depo"))
             ResponseEntity.ok().build();
         } else
             ResponseEntity.badRequest().body("Driver not busy or doesn't exist")

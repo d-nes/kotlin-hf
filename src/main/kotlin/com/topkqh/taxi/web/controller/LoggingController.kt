@@ -2,6 +2,7 @@ package com.topkqh.taxi.web.controller
 
 import com.topkqh.taxi.service.LoggingService
 import com.topkqh.taxi.service.types.Log
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -22,5 +23,10 @@ class LoggingController(val service: LoggingService) {
     @GetMapping
     fun listLog(): List<Log> {
         return service.getLog()
+    }
+
+    @DeleteMapping
+    fun wipeLog() {
+        service.wipeLog()
     }
 }

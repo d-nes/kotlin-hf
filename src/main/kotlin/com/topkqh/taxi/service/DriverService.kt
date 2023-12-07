@@ -11,6 +11,7 @@ import kotlin.jvm.optionals.toList
 class DriverService(val db: DriverRepository) {
 
     fun addDriver(driver: Driver) {
+        driver.id = null
         db.save(driver)
         println("Driver added: $driver")
     }
