@@ -27,12 +27,30 @@ class TaxiController(val loggingService: LoggingService, val driverService: Driv
     @PostMapping("/return")
     fun returnTaxi(@RequestBody driver: Driver): ResponseEntity<out Any> {
         val valid = driverService.returnDriver(driver)
-        return if (valid) {
-            loggingService.addLog(Log(null, null, null, driver.name, null, "Driver has return to depo"))
-            ResponseEntity.ok().build();
-        } else
-            ResponseEntity.badRequest().body("Driver not busy or doesn't exist")
+        if (valid) {
+            loggingService.addLog(Log(null, null, null, driver.name, null, "Driver has returned to depo"))
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body("Driver not busy or doesn't exist")
 
+    }
+
+    @PutMapping("/modify")
+    fun modifyTaxi(@RequestBody driver: Driver, @RequestBody customer: Customer): ResponseEntity<out Any>  {
+        if (driverService.isDriverBusy(driver)){
+            loggingService.addLog(Log(null, null, null, driver.name, customer.name, "Dispatch modified, pick-up: from " + customer.location + " to " + customer.destination))
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body("Modification unsuccessful")
+    }
+
+    @DeleteMapping("/cancel")
+    fun cancelTaxi(@RequestBody driver: Driver) : ResponseEntity<out Any> {
+        if(driverService.isDriverBusy(driver)){
+            loggingService.addLog(Log(null, null, null, driver.name, null, "Dispatch cancelled, driver has returned to depo"))
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body("Cancellation unsuccessful")
     }
 
 }

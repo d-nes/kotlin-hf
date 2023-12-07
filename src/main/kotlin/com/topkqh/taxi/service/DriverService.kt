@@ -48,4 +48,8 @@ class DriverService(val db: DriverRepository) {
     fun returnDriver(driver: Driver): Boolean {
         return busyDrivers.remove(driver)
     }
+
+    fun isDriverBusy(driver: Driver): Boolean {
+        return busyDrivers.contains(driver)
+    }
 }
