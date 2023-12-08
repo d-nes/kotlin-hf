@@ -25,9 +25,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	runtimeOnly("com.h2database:h2:2.1.214")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
-	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.15")
-	implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
-	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.15")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 	implementation("com.google.code.gson:gson:2.10.1")
 }
 
