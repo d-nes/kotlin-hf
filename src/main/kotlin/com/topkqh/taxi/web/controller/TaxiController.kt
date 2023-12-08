@@ -6,14 +6,22 @@ import com.topkqh.taxi.service.types.Customer
 import com.topkqh.taxi.service.types.Dispatch
 import com.topkqh.taxi.service.types.Driver
 import com.topkqh.taxi.service.types.Log
+import com.topkqh.taxi.web.types.ModificationRequest
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import kotlin.random.Random
 
+
+@Tag(name = "Taxi", description = "Taxi operation management APIs")
 @RestController
 @RequestMapping("/")
 class TaxiController(val loggingService: LoggingService, val driverService: DriverService) {
 
+    @Operation(
+        summary = "Request a Taxi",
+        description = "Request a Taxi by specifying customer's details")
     @PostMapping("/request")
     fun requestTaxi(@RequestBody customer: Customer): ResponseEntity<out Any> {
         val driver = driverService.dispatchDriver()
@@ -24,6 +32,9 @@ class TaxiController(val loggingService: LoggingService, val driverService: Driv
         return ResponseEntity.ok().body("No available drivers")
     }
 
+    @Operation(
+        summary = "Return Taxi",
+        description = "Return Taxi to depo by specifying it's details")
     @PostMapping("/return")
     fun returnTaxi(@RequestBody driver: Driver): ResponseEntity<out Any> {
         val valid = driverService.returnDriver(driver)
@@ -35,15 +46,21 @@ class TaxiController(val loggingService: LoggingService, val driverService: Driv
 
     }
 
+    @Operation(
+        summary = "Modify an already requested Taxi",
+        description = "Modify Taxi request by specifying the Taxi's details, and the modified customer details")
     @PutMapping("/modify")
-    fun modifyTaxi(@RequestBody driver: Driver, @RequestBody customer: Customer): ResponseEntity<out Any>  {
-        if (driverService.isDriverBusy(driver)){
-            loggingService.addLog(Log(null, null, null, driver.name, customer.name, "Dispatch modified, pick-up: from " + customer.location + " to " + customer.destination))
+    fun modifyTaxi(@RequestBody request: ModificationRequest): ResponseEntity<out Any>  {
+        if (driverService.isDriverBusy(request.driver)){
+            loggingService.addLog(Log(null, null, null, request.driver.name, request.customer.name, "Dispatch modified, pick-up: from " + request.customer.location + " to " + request.customer.destination))
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().body("Modification unsuccessful")
     }
 
+    @Operation(
+        summary = "Cancel a Taxi",
+        description = "Cancel a Taxi by specifying Taxi's details")
     @DeleteMapping("/cancel")
     fun cancelTaxi(@RequestBody driver: Driver) : ResponseEntity<out Any> {
         if(driverService.isDriverBusy(driver)){
